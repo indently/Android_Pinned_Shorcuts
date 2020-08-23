@@ -32,14 +32,17 @@ object Shortcuts {
             )
             .build()
 
+        //Create an array of intents to create a more fluent user experience in the back stack
+        val intents = arrayOf(
+            Intent(Intent.ACTION_VIEW, null, context, MainActivity::class.java),
+            Intent(Intent.ACTION_VIEW, null, context, Messages::class.java)
+        )
 
         val shortcut2 = ShortcutInfo.Builder(context, "id_messages")
             .setShortLabel("Messages")
             .setLongLabel("Open messages")
             .setIcon(Icon.createWithResource(context, R.drawable.ic_messages))
-            .setIntent(
-                Intent(Intent.ACTION_VIEW, null, context, Messages::class.java)
-            )
+            .setIntents(intents)
             .build()
 
 

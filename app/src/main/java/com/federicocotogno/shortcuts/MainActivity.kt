@@ -17,13 +17,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        //Check's that the api version meets the requirements
         if (Build.VERSION.SDK_INT >= 25) {
+            //Sets up our shortcuts
             Shortcuts.setUp(applicationContext)
         }
 
-
+        //Check's that the api version meets the requirements
         if (Build.VERSION.SDK_INT >= 28) {
+            //Sets up the option to use pinned shortcuts
             shortcutPins()
         }
 
@@ -34,51 +36,46 @@ class MainActivity : AppCompatActivity() {
     private fun shortcutPins() {
 
         btn_youtube_sc.setOnClickListener {
-
             val shortcutManager = getSystemService(ShortcutManager::class.java)
 
             if (shortcutManager!!.isRequestPinShortcutSupported) {
                 val pinShortcutInfo = ShortcutInfo.Builder(applicationContext, "id_website").build()
 
-                // Create the PendingIntent object only if your app needs to be notified
-                // that the user allowed the shortcut to be pinned. Note that, if the
-                // pinning operation fails, your app isn't notified. We assume here that the
-                // app has implemented a method called createShortcutResultIntent() that
-                // returns a broadcast intent.
                 val pinnedShortcutCallbackIntent =
                     shortcutManager.createShortcutResultIntent(pinShortcutInfo)
 
-                // Configure the intent so that your app's broadcast receiver gets
-                // the callback successfully.For details, see PendingIntent.getBroadcast().
                 val successCallback = PendingIntent.getBroadcast(
                     applicationContext, /* request code */ 0,
                     pinnedShortcutCallbackIntent, /* flags */ 0
                 )
 
-                Log.d("Main", successCallback.toString())
-
                 shortcutManager.requestPinShortcut(
                     pinShortcutInfo,
                     successCallback.intentSender
                 )
+
             }
         }
 
         btn_messages_sc.setOnClickListener {
-
             val shortcutManager = getSystemService(ShortcutManager::class.java)
 
+            //Checks if we can support the pin feature
             if (shortcutManager!!.isRequestPinShortcutSupported) {
+                // Gets the current id of the shortcut we want to use
                 val pinShortcutInfo =
                     ShortcutInfo.Builder(applicationContext, "id_messages").build()
 
+                //Create the callback
                 val pinnedShortcutCallbackIntent =
                     shortcutManager.createShortcutResultIntent(pinShortcutInfo)
 
+                //Notifies us that it has been successfully pinned
                 val successCallback = PendingIntent.getBroadcast(
                     applicationContext, /* request code */ 1,
                     pinnedShortcutCallbackIntent, /* flags */ 0
                 )
+                //Requests the pin shortcut, and if successful, will displayit.
                 shortcutManager.requestPinShortcut(
                     pinShortcutInfo,
                     successCallback.intentSender
