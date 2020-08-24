@@ -1,6 +1,7 @@
 package com.federicocotogno.shortcuts
 
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
@@ -25,64 +26,42 @@ class MainActivity : AppCompatActivity() {
 
         //Check's that the api version meets the requirements
         if (Build.VERSION.SDK_INT >= 28) {
-            //Sets up the option to use pinned shortcuts
-            shortcutPins()
+
+            //Takes care of activating the pinned shortcuts
+
+            btn_youtube_sc.setOnClickListener {
+                shortcutPin(applicationContext, shortcut_website_id, 0)
+            }
+
+            btn_messages_sc.setOnClickListener {
+                shortcutPin(applicationContext, shortcut_messages_id, 1)
+            }
         }
 
     }
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun shortcutPins() {
+    private fun shortcutPin(context: Context, shortcut_id: String, requestCode: Int) {
 
-        btn_youtube_sc.setOnClickListener {
             val shortcutManager = getSystemService(ShortcutManager::class.java)
 
             if (shortcutManager!!.isRequestPinShortcutSupported) {
-                val pinShortcutInfo = ShortcutInfo.Builder(applicationContext, "id_website").build()
-
-                val pinnedShortcutCallbackIntent =
-                    shortcutManager.createShortcutResultIntent(pinShortcutInfo)
-
-                val successCallback = PendingIntent.getBroadcast(
-                    applicationContext, /* request code */ 0,
-                    pinnedShortcutCallbackIntent, /* flags */ 0
-                )
-
-                shortcutManager.requestPinShortcut(
-                    pinShortcutInfo,
-                    successCallback.intentSender
-                )
-
-            }
-        }
-
-        btn_messages_sc.setOnClickListener {
-            val shortcutManager = getSystemService(ShortcutManager::class.java)
-
-            //Checks if we can support the pin feature
-            if (shortcutManager!!.isRequestPinShortcutSupported) {
-                // Gets the current id of the shortcut we want to use
                 val pinShortcutInfo =
-                    ShortcutInfo.Builder(applicationContext, "id_messages").build()
+                    ShortcutInfo.Builder(context, shortcut_id).build()
 
-                //Create the callback
                 val pinnedShortcutCallbackIntent =
                     shortcutManager.createShortcutResultIntent(pinShortcutInfo)
 
-                //Notifies us that it has been successfully pinned
                 val successCallback = PendingIntent.getBroadcast(
-                    applicationContext, /* request code */ 1,
+                    context, /* request code */ requestCode,
                     pinnedShortcutCallbackIntent, /* flags */ 0
                 )
-                //Requests the pin shortcut, and if successful, will display it.
+
                 shortcutManager.requestPinShortcut(
                     pinShortcutInfo,
                     successCallback.intentSender
                 )
             }
-        }
-
-
     }
 }

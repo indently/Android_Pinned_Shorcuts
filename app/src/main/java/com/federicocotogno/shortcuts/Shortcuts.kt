@@ -11,6 +11,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.*
 
+const val shortcut_website_id = "id_website"
+const val shortcut_messages_id = "id_messages"
+
 //Requires api level 25
 @RequiresApi(Build.VERSION_CODES.N_MR1)
 object Shortcuts {
@@ -20,7 +23,7 @@ object Shortcuts {
             getSystemService<ShortcutManager>(context, ShortcutManager::class.java)
 
 
-        val shortcut = ShortcutInfo.Builder(context, "id_website")
+        val shortcut = ShortcutInfo.Builder(context, shortcut_website_id)
             .setShortLabel("Website")
             .setLongLabel("Open the website")
             .setIcon(Icon.createWithResource(context, R.drawable.ic_website))
@@ -38,7 +41,7 @@ object Shortcuts {
             Intent(Intent.ACTION_VIEW, null, context, Messages::class.java)
         )
 
-        val shortcut2 = ShortcutInfo.Builder(context, "id_messages")
+        val shortcut2 = ShortcutInfo.Builder(context, shortcut_messages_id)
             .setShortLabel("Messages")
             .setLongLabel("Open messages")
             .setIcon(Icon.createWithResource(context, R.drawable.ic_messages))
