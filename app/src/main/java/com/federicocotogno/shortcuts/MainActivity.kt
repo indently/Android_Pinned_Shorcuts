@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                     applicationContext, /* request code */ 1,
                     pinnedShortcutCallbackIntent, /* flags */ 0
                 )
-                //Requests the pin shortcut, and if successful, will displayit.
+                //Requests the pin shortcut, and if successful, will display it.
                 shortcutManager.requestPinShortcut(
                     pinShortcutInfo,
                     successCallback.intentSender
